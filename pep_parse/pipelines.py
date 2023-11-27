@@ -3,27 +3,19 @@ from datetime import datetime as dt
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
-PEP_STATUSES = {
-    'Active': 0,
-    'Accepted': 0,
-    'Final': 0,
-    'Draft': 0,
-    'Deferred': 0,
-    'Rejected': 0,
-    'Withdrawn': 0,
-    'Superseded': 0,
-    'April Fool!': 0,
-    'Provisional': 0,
-}
 
 
 class PepParsePipeline:
 
     def open_spider(self, spider):
-        self.status = PEP_STATUSES
+        self.status = {}
 
     def process_item(self, item, spider):
-        self.status[item['status']] += 1
+        status_pep = item['status']
+        if status_pep in self.status:
+            self.status[status_pep] += 1
+        else:
+            self.status[status_pep] = 1
         return item
 
     def close_spider(self, spider):
