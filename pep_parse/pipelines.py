@@ -12,10 +12,7 @@ class PepParsePipeline:
 
     def process_item(self, item, spider):
         status_pep = item['status']
-        if status_pep in self.status:
-            self.status[status_pep] += 1
-        else:
-            self.status[status_pep] = 1
+        self.status[status_pep] = self.status.get(status_pep, 0) + 1
         return item
 
     def close_spider(self, spider):
